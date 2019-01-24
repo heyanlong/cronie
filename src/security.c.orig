@@ -86,7 +86,6 @@ static int cron_open_pam_session(struct passwd *pw);
 		if (pam_session_opened != 0) \
 			pam_close_session(pamh, PAM_SILENT); \
 		pam_end(pamh, retcode); \
-		pamh = NULL; \
 	} \
 return(retcode); }
 #endif
@@ -222,10 +221,7 @@ void cron_close_pam(void) {
 		pam_setcred(pamh, PAM_DELETE_CRED | PAM_SILENT);
 		pam_close_session(pamh, PAM_SILENT);
 	}
-	if (pamh != NULL) {
-		pam_end(pamh, PAM_SUCCESS);
-		pamh = NULL;
-	}
+	pam_end(pamh, PAM_SUCCESS);
 #endif
 }
 
